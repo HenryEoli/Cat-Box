@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: antiquewhite;
+            color: black;
+            font-family:monospace;
+            font-size: 15px;
+        }
+        table,td,th,tr{
+            border: darkslategray 1px solid;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        table{
+            width: 60%;
+        }
+        td{
+            width: 30%;
+        }
+        header{
+            color: darkslategray;
+            top:0%;
+            left: 0%;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        nav{
+            top:10%;
+            left: 0%;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        main{
+            top:20%;
+            left: 0%;
+            height: 70%;
+            width: 100%;
+            position: fixed;
+            text-align: left;
+            padding-left: 5%;
+            overflow: auto;
+        }
+        footer{
+            color: darkslategray;
+            top:90%;
+            left: 0%;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        button{
+            background-color: darkslategray;
+        }
+    </style>
+    <title>Evento Mouse</title>
+</head>
+<body>
+    
+        <header><h1>Evento Mouse</h1></header>
+
+        <nav></nav>
+
+        <main>
+        <Table id="tb">
+            <tr>
+                <th colspan="3">Eventos</th>
+            </tr>
+            <tr>
+                <td>onclick</td>
+                <td>um click no mouse</td>
+                <td><button onclick="click()">Click</button></td>
+            </tr>
+            <tr>      
+            <td>ondbleclick</td>
+            <td>click duplo no mouse</td>
+            <td><button ondblclick="claro()">Claro</button>
+                <button ondblclick="escuro()">Escuro</button>
+            </td>
+            </tr>  
+            <tr id="ver" onmouseover="cor()" onmouseout="vcor()">
+                <td>onmouseover</td>
+                <td>mouse sobre o elemento</td>
+                <td></td>
+            </tr>
+            <tr id="ama" onmouseover="cor2()" onmouseout="vcor()">    
+                <td>onmouseout</td>
+                <td>quando o mouse sai do elemento</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>onmousemove</td>
+                <td>quando o mouse se move no elemento</td>
+                <td id="move" onmouseover="mover()" onmouseout="saiu()"></td>
+            </tr>
+                <td>onmousedown</td>
+                <td>quando o botão do mouse é apertado</td>
+                <td><button onmousedown="apertar()">Apertar</button></td>
+            </tr>
+                <td>onmouseup</td>
+                <td>quando o botão do mouse é solto</td>
+                <td><button onmouseup="soltar()">Soltar</button></td>
+            </tr>
+        </Table>
+        </main>
+        <footer>
+            <h2>PW III - Henry</h2>
+        </footer>
+</body>
+
+    <script>
+
+    function click(){
+            alert ("Clickou");
+        }
+
+    function escuro(){
+        document.body.style.backgroundColor="darkslategray";
+        document.body.style.color="antiquewhite";
+
+        var celulas = document.querySelectorAll('#tb, td, th, tr');
+        celulas.forEach(function(celula){
+            celula.style.border = '1px solid antiquewhite';
+            celula.style.color = 'antiquewhite';
+        })
+        var celulas = document.querySelectorAll('footer, header');
+        celulas.forEach(function(celula){
+            celula.style.color = 'antiquewhite';
+        })
+        var celulas = document.querySelectorAll('button');
+        celulas.forEach(function(celula){
+            celula.style.backgroundColor = 'antiquewhite';
+        })
+    }
+    function claro(){
+        document.body.style.backgroundColor="antiquewhite";
+        document.body.style.color="darkslategray";
+
+        var celulas = document.querySelectorAll('#tb, td, th, tr');
+        celulas.forEach(function(celula){
+            celula.style.border = '1px solid darkslategray';
+            celula.style.color = 'darkslategray';
+        })
+        var celulas = document.querySelectorAll('footer, header');
+        celulas.forEach(function(celula){
+            celula.style.color = 'darkslategray';
+        })
+        var celulas = document.querySelectorAll('button');
+        celulas.forEach(function(celula){
+            celula.style.backgroundColor = 'darkslategray';
+        })
+    }
+    </script>
+
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: antiquewhite;
+            color: black;
+            font-family: monospace;
+            font-size: 15px;
+        }
+        table, td, th, tr {
+            border: darkslategray 1px solid;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        table { width: 40%; }
+        td { width: 30%; }
+        header {
+            color: darkslategray;
+            top: 0%; left: 0%;
+            height: 10%; width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        nav {
+            top: 10%; left: 0%;
+            height: 10%; width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        main {
+            top: 20%; left: 0%;
+            height: 70%; width: 100%;
+            position: fixed;
+            text-align: left;
+            padding-left: 5%;
+            overflow: auto;
+            display: flex;
+            gap: 40px;
+        }
+        footer {
+            color: darkslategray;
+            top: 90%; left: 0%;
+            height: 10%; width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        button {
+            background-color: darkslategray;
+            color: antiquewhite;
+            cursor: pointer;
+            border: none;
+            padding: 4px;
+        }
+        #inventario {
+            margin-top: 10px;
+            min-width: 260px;
+        }
+        #inventario h3 {
+            margin-bottom: 8px;
+            color: darkslategray;
+        }
+        #grade-inventario {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 260px;
+        }
+        .slot {
+            width: 60px;
+            height: 60px;
+            border: 1px solid darkslategray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: darkslategray;
+            background-color: rgba(47,79,79,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slot .badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: darkslategray;
+            color: antiquewhite;
+            font-size: 9px;
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+        #inventario-vazio {
+            color: gray;
+            font-size: 12px;
+            font-style: italic;
+        }
+    </style>
+    <title>Hyper Box</title>
+</head>
+<body>
+
+    <header><h1>Hyper Box</h1></header>
+
+    <nav>
+        <button ondblclick="claro()">Claro</button>
+        <button ondblclick="escuro()">Escuro</button>
+    </nav>
+
+    <main>
+        <div>
+            <table id="tb">
+                <tr>
+                    <th>Moedas: <span id="saldo">1000</span> <img src="img/Moedas.png" width="15"></th>
+                </tr>
+                <tr>
+                    <td>
+                        <img id="resultado" src="img/inte" width="400" height="200">
+                        <button onclick="clicke()">
+                            <img src="img/3.png" width="200px">
+                            <p>-100 MOEDAs</p>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Ganhar Moedas</th>
+                </tr>
+                <tr>
+                    <td>
+                        <button onmousedown="Spin('img/1.gif')" onmouseup="UnSpin('img/oi.jpg')">
+                            <img src="img/oi.jpg" width="200px" id="OIIA">
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="inventario">
+            <h3>Inventário (<span id="contagem">0</span>)</h3>
+            <div id="grade-inventario">
+                <span id="inventario-vazio">Nenhum item ainda.</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <h2>PW III - Henry</h2>
+    </footer>
+
+    <script>
+        var moedas = 1000;
+        var inventario = {};
+        var spinInterval = null;
+
+        function clicke() {
+            if (moedas >= 100) {
+                var numero = Math.floor(Math.random() * 10) + 1;
+                var srcItem = "img/" + numero + ".jpg";
+
+                document.getElementById("resultado").src = srcItem;
+                moedas -= 100;
+                document.getElementById("saldo").innerText = moedas;
+
+                if (numero === 5) {
+                    alert("OU NÃO, O JEFREY ROUBOU TODOS OS SEUS GATOS");
+                    resetarInventario();
+                    return;
+                }
+
+                adicionarAoInventario(numero, srcItem);
+
+                var gatosNecessarios = [1,2,3,4,6,7,8,9,10];
+                var pegouTodos = gatosNecessarios.every(function(n) {
+                    return inventario[n];
+                });
+
+                if (pegouTodos) {
+                    alert("PARABENS POR PEGAR TODOS OS GATOS");
+                }
+
+            } else {
+                alert("Sem moedas, skibidi");
+            }
+        }
+
+        function adicionarAoInventario(numero, src) {
+            if (inventario[numero]) {
+                inventario[numero].qtd++;
+                document.querySelector('[data-item="' + numero + '"] .badge').innerText = "x" + inventario[numero].qtd;
+            } else {
+                inventario[numero] = { qtd: 1, src: src };
+
+                var grade = document.getElementById("grade-inventario");
+
+                var vazio = document.getElementById("inventario-vazio");
+                if (vazio) vazio.remove();
+
+                var slot = document.createElement("div");
+                slot.classList.add("slot");
+                slot.setAttribute("data-item", numero);
+                slot.title = "Item " + numero;
+
+                var img = document.createElement("img");
+                img.src = src;
+                img.alt = "Item " + numero;
+
+                var badge = document.createElement("span");
+                badge.classList.add("badge");
+                badge.innerText = "x1";
+
+                slot.appendChild(img);
+                slot.appendChild(badge);
+                grade.appendChild(slot);
+            }
+
+            document.getElementById("contagem").innerText = Object.keys(inventario).length;
+        }
+
+        function resetarInventario() {
+            inventario = {};
+            document.getElementById("grade-inventario").innerHTML = '<span id="inventario-vazio">Nenhum item ainda.</span>';
+            document.getElementById("contagem").innerText = 0;
+        }
+
+        function Spin(path) {
+            document.getElementById("OIIA").src = path;
+            spinInterval = setInterval(function() {
+                moedas += 10;
+                document.getElementById("saldo").innerText = moedas;
+            }, 200);
+        }
+
+        function UnSpin(path) {
+            document.getElementById("OIIA").src = path;
+            clearInterval(spinInterval);
+        }
+
+        function escuro() {
+            document.body.style.backgroundColor = "darkslategray";
+            document.body.style.color = "antiquewhite";
+            document.querySelectorAll('#tb, td, th, tr').forEach(function(el) {
+                el.style.border = '1px solid antiquewhite';
+                el.style.color = 'antiquewhite';
+            });
+            document.querySelectorAll('footer, header').forEach(function(el) {
+                el.style.color = 'antiquewhite';
+            });
+            document.querySelectorAll('button').forEach(function(el) {
+                el.style.backgroundColor = 'antiquewhite';
+            });
+            document.getElementById("inventario").querySelector("h3").style.color = 'antiquewhite';
+            document.querySelectorAll('.slot').forEach(function(el) {
+                el.style.border = '1px solid antiquewhite';
+            });
+        }
+
+        function claro() {
+            document.body.style.backgroundColor = "antiquewhite";
+            document.body.style.color = "darkslategray";
+            document.querySelectorAll('#tb, td, th, tr').forEach(function(el) {
+                el.style.border = '1px solid darkslategray';
+                el.style.color = 'darkslategray';
+            });
+            document.querySelectorAll('footer, header').forEach(function(el) {
+                el.style.color = 'darkslategray';
+            });
+            document.querySelectorAll('button').forEach(function(el) {
+                el.style.backgroundColor = 'darkslategray';
+            });
+            document.getElementById("inventario").querySelector("h3").style.color = 'darkslategray';
+            document.querySelectorAll('.slot').forEach(function(el) {
+                el.style.border = '1px solid darkslategray';
+            });
+        }
+    </script>
+</body>
+</html>

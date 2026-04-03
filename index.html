@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+    <style>
+        body{
+            background-color: antiquewhite;
+            color: darkslategray;
+            font-family:monospace;
+            font-size: 15px;
+        }
+        table,td,th,tr{
+            border: darkslategray 1px solid;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        table{
+            width: 40%;
+        }
+        td{
+            width: 30%;
+        }
+        header{
+            color: darkslategray;
+            top:0%;
+            left: 0%;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        nav{
+            top:10%;
+            left: 0%;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            text-align: center;
+            margin-left: center;
+        }
+        main{
+            top:20%;
+            left: 0%;
+            height: 70%;
+            width: 100%;
+            position: fixed;
+            text-align: left;
+            padding-left: 5%;
+            overflow: auto;
+        }
+        footer{
+            color: darkslategray;
+            top:90%;
+            left: 0%;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            text-align: center;
+        }
+        button{
+            background-color: #ff3131;
+        }
+        div{
+            flex: 1;
+        }
+    </style>
+    <title>Cat Box</title>
+</head>
+<body>
+    
+        <header><h1>Cat Box</h1></header>
+
+        <nav>
+            <td><button ondblclick="claro()">Claro</button></td>
+            <td><button ondblclick="escuro()">Escuro</button></td>
+        </nav>
+
+        <main>
+        <div class="w3-row">
+            <div class="w3-col s3 w3-center">
+                <Table>
+                    <tr><th>-100 MOEDAS <img src="img/Moedas.png" width="15"></th></tr>   
+
+                    <tr><td><img id="resultado" src="img/inte" width="300" height="200"></td></tr>
+
+                    <tr><th>Girar Gatos</th></tr>
+
+                    <tr><td><button onclick="clicke()"><img src="img/botao.gif" width="285px" height="200px"></button></td></tr>
+                </Table>
+            </div>
+
+        <div class="w3-col s3 w3-center">
+            <table>
+                <tr><th>Moedas: <span id="saldo">1000</span></th></tr>
+
+                <tr><td><img src="img/Moedas.png" width="200px"></td></tr>
+
+                <tr><th>GANHAR MOEDAS</th></tr>
+
+                <tr><td>
+                    <button  onmousedown="Spin('img/1.gif')" onmouseup="UnSpin('img/oia.png')">
+                    <img src="img/oia.png" width="200px" id="OIIA">
+                    </button></td></tr>
+            </Table>
+        </div>
+
+        <div class="w3-col s4 w3-center"><table><tr><td>
+            <h3 style="font-size: large; font-weight: bold;">Inventario (<span id="con">0</span>)</h3>
+            <div id="inv">
+                <h6 style="color: gray; font-family: monospace; font-size: medium;">Inventario Vazio...</h6>
+            </div>
+        </td></tr></table>
+        </div>
+
+    </div>
+        </main>
+        <footer>
+            <h2>PW III - Henry</h2>
+        </footer>
+</body>
+
+    <script>
+
+        var moedas = 1000;
+
+    function clicke(){
+
+        if(moedas >= 100){         
+            var numero = Math.floor(Math.random() * 10) + 1;
+            var srcItem = "img/" + numero + ".jpg";
+
+            document.getElementById("resultado").src = srcItem;            
+            moedas -= 100        
+            document.getElementById("saldo").innerText = moedas;
+
+            } else {
+                alert("Sem moedas, skibidi")
+            }
+    }
+    
+    function Spin(path){
+        
+        document.getElementById("OIIA").src = path;
+
+        moedas = moedas + 10
+        spinInterval = setInterval(function() {
+                moedas += 10;
+                document.getElementById("saldo").innerText = moedas;
+            }, 200);
+    }
+    
+    function UnSpin(path){
+        document.getElementById("OIIA").src = path;
+        clearInterval(spinInterval);
+    }
+
+    function escuro(){
+        document.body.style.backgroundColor="darkslategray";
+        document.body.style.color="antiquewhite";
+
+        var celulas = document.querySelectorAll('#tb, td, th, tr');
+        celulas.forEach(function(celula){
+            celula.style.border = '1px solid antiquewhite';
+            celula.style.color = 'antiquewhite';
+        })
+        var celulas = document.querySelectorAll('footer, header');
+        celulas.forEach(function(celula){
+            celula.style.color = 'antiquewhite';
+        })
+        var celulas = document.querySelectorAll('button');
+        celulas.forEach(function(celula){
+            celula.style.backgroundColor = '#ff3131';
+        })
+    }
+    function claro(){
+        document.body.style.backgroundColor="antiquewhite";
+        document.body.style.color="darkslategray";
+
+        var celulas = document.querySelectorAll('#tb, td, th, tr');
+        celulas.forEach(function(celula){
+            celula.style.border = '1px solid darkslategray';
+            celula.style.color = 'darkslategray';
+        })
+        var celulas = document.querySelectorAll('footer, header');
+        celulas.forEach(function(celula){
+            celula.style.color = 'darkslategray';
+        })
+        var celulas = document.querySelectorAll('button');
+        celulas.forEach(function(celula){
+            celula.style.backgroundColor = '#ff3131';
+        })
+    }
+
+
+    </script>
+
+</html>
